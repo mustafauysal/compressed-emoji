@@ -10,7 +10,7 @@ Also, [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insight
 
 ### Comparison ###
 
-[![Comparison](https://raw.githubusercontent.com/mustafauysal/compressed-emoji/master/screenshot-1.png)]
+![Comparison](https://raw.githubusercontent.com/mustafauysal/compressed-emoji/master/screenshot-1.png)
 
 
 ### Filters ###
