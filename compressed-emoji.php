@@ -10,6 +10,10 @@ License: GPLv2 (or later)
 Text Domain: compressed-emoji
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 add_filter( 'emoji_url', 'compressed_emoji_url' );
 add_filter( 'emoji_svg_url', 'compressed_emoji_svg_url' );
 
