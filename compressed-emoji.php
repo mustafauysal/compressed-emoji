@@ -2,11 +2,12 @@
 /*
 Plugin Name: Compressed Emoji
 Plugin URI: https://github.com/mustafauysal/compressed-emoji
-Description: You know emoji,
+Description: Same emoji, but compressed.
 Author: Mustafa Uysal
 Version: 1.0
 Author URI: http://uysalmustafa.com
 License: GPLv2 (or later)
+Text Domain: compressed-emoji
 */
 
 add_filter( 'emoji_url', 'compressed_emoji_url' );
