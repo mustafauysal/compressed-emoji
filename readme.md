@@ -1,12 +1,11 @@
 Compressed Emoji
 ===============
 
- Same emoji, but compressed
+Same emoji, but compressed. It helps to serve emoji via your server.
 
 ## Description ##
 
-WordPress emoji comes from `s.w.org` and they are not optimized well, Compressed Emoji fixes this problem.
-Also, [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/) will get on well with emoji.
+__Origin Story__: WordPress emoji comes from `s.w.org` and they were not optimized well, Compressed Emoji was fixing that problem [(detail info)](https://wptavern.com/new-wordpress-plugin-serves-pre-compressed-emoji).
 
 ### Comparison ###
 
@@ -23,9 +22,9 @@ Also, [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insight
 
 ### Credits ###
 
-* [Adem Ilter](https://github.com/ademilter/) for emoji compression
+* [Adem Ilter](https://github.com/ademilter/) for inspire
+* [svgo](https://github.com/svg/svgo) for emoji compression
 * [twemoji](https://github.com/twitter/twemoji) for emoji
-
 
 
 ## Installation ##
