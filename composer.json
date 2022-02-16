@@ -1,0 +1,21 @@
+{
+  "name": "mustafauysal/compressed-emoji",
+  "type": "wordpress-plugin",
+  "description": "Same emoji, but compressed. It helps to serve emoji via your server.",
+  "homepage": "https://github.com/mustafauysal/compressed-emoji/",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Mustafa Uysal",
+      "homepage": "https://uysalmustafa.com/"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0"
+  },
+  "support": {
+    "issues": "https://github.com/mustafauysal/compressed-emoji/issues",
+    "forum": "https://wordpress.org/support/plugin/compressed-emoji",
+    "source": "https://github.com/mustafauysal/compressed-emoji"
+  }
+}
