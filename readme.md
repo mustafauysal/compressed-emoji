@@ -9,7 +9,7 @@ __Origin Story__: WordPress emoji comes from `s.w.org` and they were not optimiz
 
 ### Comparison ###
 
-![Comparison](https://raw.githubusercontent.com/mustafauysal/compressed-emoji/master/screenshot-1.png)
+![Comparison](https://raw.githubusercontent.com/mustafauysal/compressed-emoji/master/.wordpress-org/screenshot-1.png)
 
 
 ### Filters ###
