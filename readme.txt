@@ -2,7 +2,7 @@
 Contributors: m_uysl
 Tags: emoji,emoticons,compressed emoji,optimized emoji
 Requires at least: 4.6
-Tested up to: 5.9
+Tested up to: 6.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,6 +23,13 @@ __Origin Story__: WordPress emoji comes from `s.w.org` and they were not optimiz
 = Contributing =
 Pull requests are welcome on [Github](https://github.com/mustafauysal/compressed-emoji)
 
+__If you like Compressed Emoji, then consider checking out my other projects:__
+
+* <a href="https://handyplugins.co/magic-login-pro/" rel="friend">Magic Login Pro</a> – Easy, secure, and passwordless authentication for WordPress.
+* <a href="https://handyplugins.co/easy-text-to-speech/" rel="friend">Easy Text-to-Speech for WordPress</a> – Transform your textual content into high-quality synthesized speech with Amazon Polly.
+* <a href="https://handyplugins.co/handywriter/" rel="friend">Handywriter</a> – AI-powered writing assistant that can help you create content for your WordPress.
+* <a href="https://handyplugins.co/paddlepress-pro/" rel="friend">PaddlePress PRO</a> – Paddle Plugin for WordPress
+
 
 == Installation ==
 
@@ -40,6 +47,10 @@ You can use `compressed_emoji_url` and 	`compressed_emoji_svg_url` filters for C
 1. Comparison
 
 == Changelog ==
+
+= 1.5 =
+* Twemoji 14.0.2 update
+* Tested with WordPress 6.3
 
 = 1.4 =
 * Twemoji 13.1.0 update
