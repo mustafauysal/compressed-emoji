@@ -3,7 +3,7 @@ Contributors: m_uysl
 Tags: emoji,emoticons,compressed emoji,optimized emoji
 Requires at least: 4.6
 Tested up to: 6.5
-Stable tag: trunk
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
