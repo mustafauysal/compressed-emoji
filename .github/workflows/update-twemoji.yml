@@ -86,8 +86,11 @@ jobs:
           TOTAL_SVG=$(find "$SVG_SOURCE" -name "*.svg" | wc -l)
           echo "Found $TOTAL_SVG SVG files to optimize"
           
-          # Optimize SVG files with SVGO
-          find "$SVG_SOURCE" -name "*.svg" -exec svgo --multipass {} --output /tmp/optimized/svg/{/} \;
+          # Copy SVG files to temp directory first
+          cp "$SVG_SOURCE"/*.svg /tmp/optimized/svg/
+          
+          # Optimize SVG files with SVGO (batch mode for efficiency)
+          svgo --multipass -f /tmp/optimized/svg
           
           # Verify optimization
           OPTIMIZED_COUNT=$(find /tmp/optimized/svg -name "*.svg" | wc -l)
