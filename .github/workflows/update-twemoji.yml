@@ -43,8 +43,9 @@ jobs:
           
           # Check if we already have this version
           if [ -f ".twemoji-version" ]; then
-            CURRENT_VERSION=$(cat .twemoji-version)
-            if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+            CURRENT_VERSION=$(cat .twemoji-version | tr -d '[:space:]')
+            LATEST_VERSION_TRIMMED=$(echo "$LATEST_VERSION" | tr -d '[:space:]')
+            if [ "$CURRENT_VERSION" = "$LATEST_VERSION_TRIMMED" ]; then
               echo "Already on latest version $LATEST_VERSION"
               echo "skip=true" >> $GITHUB_OUTPUT
               exit 0
@@ -127,13 +128,14 @@ jobs:
           # Optimize PNG files with pngquant (lossy compression)
           # Using quality 80-95 for good balance between size and quality
           cd /tmp/optimized/png
-          if ls *.png 1> /dev/null 2>&1; then
-            pngquant --quality=80-95 --ext .png --force *.png || echo "Warning: Some PNG files could not be optimized with pngquant"
+          PNG_FILES=$(find . -maxdepth 1 -name "*.png" -type f)
+          if [ -n "$PNG_FILES" ]; then
+            find . -maxdepth 1 -name "*.png" -type f -exec pngquant --quality=80-95 --ext .png --force {} \; || echo "Warning: Some PNG files could not be optimized with pngquant"
           fi
           
           # Further optimize with optipng (lossless)
-          if ls *.png 1> /dev/null 2>&1; then
-            optipng -o2 *.png
+          if [ -n "$PNG_FILES" ]; then
+            find . -maxdepth 1 -name "*.png" -type f -exec optipng -o2 {} \;
           fi
           
           # Verify optimization
@@ -155,16 +157,16 @@ jobs:
             exit 1
           fi
           
-          # Remove old images
-          rm -rf images/svg/*
-          rm -rf images/png/*
+          # Remove old images using find to handle empty directories gracefully
+          find images/svg -type f -name "*.svg" -delete 2>/dev/null || true
+          find images/png -type f -name "*.png" -delete 2>/dev/null || true
           
           # Copy optimized files if they exist
           if [ "$SVG_OPTIMIZED" -gt 0 ]; then
-            cp /tmp/optimized/svg/* images/svg/
+            find /tmp/optimized/svg -type f -name "*.svg" -exec cp {} images/svg/ \;
           fi
           if [ "$PNG_OPTIMIZED" -gt 0 ]; then
-            cp /tmp/optimized/png/* images/png/
+            find /tmp/optimized/png -type f -name "*.png" -exec cp {} images/png/ \;
           fi
           
           # Update version file
