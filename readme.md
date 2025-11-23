@@ -27,6 +27,18 @@ __Origin Story__: WordPress emoji comes from `s.w.org` and they were not optimiz
 * [twemoji](https://github.com/twitter/twemoji) for emoji
 
 
+## Automated Updates ##
+
+This repository includes a GitHub Actions workflow that automatically checks for new Twemoji releases monthly and creates a pull request with optimized emoji assets. The workflow:
+
+* Fetches the latest release from [jdecked/twemoji](https://github.com/jdecked/twemoji/)
+* Optimizes SVG files using SVGO
+* Optimizes PNG files using pngquant and optipng
+* Creates a pull request with the updated assets
+
+The workflow can also be triggered manually from the Actions tab.
+
+
 ## Installation ##
 
 Extract the zip file and just drop the contents in the `wp-content/plugins/` directory of your WordPress installation and then activate the Plugin from admin's Plugins page.
