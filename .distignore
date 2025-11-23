@@ -50,3 +50,4 @@ vendor
 lerna.json
 hookdoc-conf.json
 *.js.LICENSE.txt
+.twemoji-version
