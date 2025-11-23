@@ -117,13 +117,24 @@ jobs:
           # Copy PNG files to temp directory
           find "$PNG_SOURCE" -name "*.png" -exec cp {} /tmp/optimized/png/ \;
           
+          # Verify we have files to optimize
+          COPIED_COUNT=$(find /tmp/optimized/png -name "*.png" | wc -l)
+          if [ "$COPIED_COUNT" -eq 0 ]; then
+            echo "Error: No PNG files found to optimize"
+            exit 1
+          fi
+          
           # Optimize PNG files with pngquant (lossy compression)
           # Using quality 80-95 for good balance between size and quality
           cd /tmp/optimized/png
-          pngquant --quality=80-95 --ext .png --force *.png || true
+          if ls *.png 1> /dev/null 2>&1; then
+            pngquant --quality=80-95 --ext .png --force *.png || echo "Warning: Some PNG files could not be optimized with pngquant"
+          fi
           
           # Further optimize with optipng (lossless)
-          optipng -o2 *.png
+          if ls *.png 1> /dev/null 2>&1; then
+            optipng -o2 *.png
+          fi
           
           # Verify optimization
           OPTIMIZED_COUNT=$(find /tmp/optimized/png -name "*.png" | wc -l)
@@ -135,21 +146,33 @@ jobs:
         run: |
           echo "Updating repository with optimized images..."
           
-          # Backup existing images (just in case)
+          # Verify we have optimized files to copy
+          SVG_OPTIMIZED=$(find /tmp/optimized/svg -name "*.svg" | wc -l)
+          PNG_OPTIMIZED=$(find /tmp/optimized/png -name "*.png" | wc -l)
+          
+          if [ "$SVG_OPTIMIZED" -eq 0 ] && [ "$PNG_OPTIMIZED" -eq 0 ]; then
+            echo "Error: No optimized files found to copy"
+            exit 1
+          fi
+          
           # Remove old images
           rm -rf images/svg/*
           rm -rf images/png/*
           
-          # Copy optimized files
-          cp /tmp/optimized/svg/* images/svg/
-          cp /tmp/optimized/png/* images/png/
+          # Copy optimized files if they exist
+          if [ "$SVG_OPTIMIZED" -gt 0 ]; then
+            cp /tmp/optimized/svg/* images/svg/
+          fi
+          if [ "$PNG_OPTIMIZED" -gt 0 ]; then
+            cp /tmp/optimized/png/* images/png/
+          fi
           
           # Update version file
           echo "${{ steps.twemoji.outputs.version }}" > .twemoji-version
           
           # Show statistics
-          SVG_COUNT=$(ls -1 images/svg/ | wc -l)
-          PNG_COUNT=$(ls -1 images/png/ | wc -l)
+          SVG_COUNT=$(find images/svg/ -maxdepth 1 -name "*.svg" | wc -l)
+          PNG_COUNT=$(find images/png/ -maxdepth 1 -name "*.png" | wc -l)
           SVG_SIZE=$(du -sh images/svg | cut -f1)
           PNG_SIZE=$(du -sh images/png | cut -f1)
           
