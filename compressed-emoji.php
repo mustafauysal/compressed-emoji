@@ -4,7 +4,7 @@ Plugin Name: Compressed Emoji
 Plugin URI: https://github.com/mustafauysal/compressed-emoji
 Description: Same emoji, but compressed. It helps to serve emoji via your server.
 Author: Mustafa Uysal
-Version: 1.6
+Version: 1.7
 Author URI: https://uysalmustafa.com
 License: GPLv2 (or later)
 Text Domain: compressed-emoji
