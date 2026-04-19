@@ -2,9 +2,9 @@
 /*
 Plugin Name: Compressed Emoji
 Plugin URI: https://github.com/mustafauysal/compressed-emoji
-Description: Same emoji, but compressed. It helps to serve emoji via your server.
+Description: Same emoji, but optimized. It helps serve the emoji from your own server.
 Author: Mustafa Uysal
-Version: 1.7.1
+Version: 1.7.2
 Author URI: https://uysalmustafa.com
 License: GPLv2 (or later)
 Text Domain: compressed-emoji
