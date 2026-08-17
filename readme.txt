@@ -22,7 +22,7 @@ __Origin Story__: WordPress emoji comes from `s.w.org` and they were not optimiz
 
 = Automated Updates =
 
-This repository includes a GitHub Actions workflow that automatically checks for new Twemoji releases monthly and creates a pull request with optimized emoji assets. The workflow fetches the latest release from [jdecked/twemoji](https://github.com/jdecked/twemoji/), optimizes SVG files using SVGO, and optimizes PNG files using pngquant and optipng.
+This repository includes a GitHub Actions workflow that automatically checks for Twemoji asset changes monthly and creates a pull request with optimized emoji assets. The workflow skips parser-only and documentation-only releases, optimizes SVG files using SVGO, and optimizes PNG files using pngquant and optipng.
 
 = Contributing =
 Pull requests are welcome on [Github](https://github.com/mustafauysal/compressed-emoji)

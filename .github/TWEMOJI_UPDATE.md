@@ -10,13 +10,14 @@ The `update-twemoji.yml` workflow automatically checks for new Twemoji releases 
 
 1. **Version Check**: The workflow reads `.twemoji-version` to check the current version
 2. **Fetch Latest**: Queries the GitHub API for the latest Twemoji release
-3. **Download**: Clones the Twemoji repository at the specific release tag
-4. **Optimize SVG**: Processes all SVG files using SVGO with multipass optimization
-5. **Optimize PNG**: Processes all PNG files using:
+3. **Asset Check**: Compares the current and latest release tags and stops when the SVG and PNG assets are unchanged
+4. **Download**: Checks out the Twemoji repository at the specific release tag
+5. **Optimize SVG**: Processes all SVG files using SVGO with multipass optimization
+6. **Optimize PNG**: Processes all PNG files using:
    - `pngquant` for lossy compression (quality 80-95)
    - `optipng` for lossless optimization
-6. **Update Repository**: Replaces old emoji files with optimized versions
-7. **Create PR**: Opens a pull request with statistics and version information
+7. **Update Repository**: Replaces old emoji files with optimized versions
+8. **Create PR**: Opens a pull request with statistics and version information
 
 ## Triggering the Workflow
 
@@ -67,6 +68,7 @@ The workflow runs automatically on the 1st of each month at 00:00 UTC.
 
 ### No PR Created
 - Check if the version is already up to date (see workflow logs)
+- Check whether the release contains SVG or PNG asset changes; parser-only and documentation-only releases are skipped
 - Verify the workflow has permissions to create PRs
 - Check if there were any errors in previous steps
 
@@ -81,7 +83,7 @@ The workflow can be customized by editing `.github/workflows/update-twemoji.yml`
 
 ## Version Tracking
 
-The `.twemoji-version` file contains the current Twemoji version tag (e.g., `v15.0.0`). The workflow skips updates if this version matches the latest release.
+The `.twemoji-version` file contains the Twemoji release tag used for the current assets (e.g., `v17.0.3`). The workflow skips updates if this version matches the latest release or if a newer release does not change the SVG or PNG assets.
 
 ## Notes
 

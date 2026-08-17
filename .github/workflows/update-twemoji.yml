@@ -17,51 +17,78 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          
-      - name: Install optimization tools
-        run: |
-          npm install -g svgo
-          sudo apt-get update
-          sudo apt-get install -y pngquant optipng
-          
-      - name: Fetch latest Twemoji release
+
+      - name: Check for Twemoji asset updates
         id: twemoji
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
+
           # Get latest release info from jdecked/twemoji
-          RELEASE_DATA=$(curl -s https://api.github.com/repos/jdecked/twemoji/releases/latest)
-          LATEST_VERSION=$(echo "$RELEASE_DATA" | jq -r '.tag_name')
-          RELEASE_URL=$(echo "$RELEASE_DATA" | jq -r '.html_url')
-          
+          RELEASE_DATA=$(curl --fail --silent --show-error \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/jdecked/twemoji/releases/latest)
+          LATEST_VERSION=$(echo "$RELEASE_DATA" | jq -er '.tag_name')
+          RELEASE_URL=$(echo "$RELEASE_DATA" | jq -er '.html_url')
+
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
           echo "url=$RELEASE_URL" >> $GITHUB_OUTPUT
           echo "Latest Twemoji version: $LATEST_VERSION"
-          
+
           # Check if we already have this version
+          CURRENT_VERSION=""
           if [ -f ".twemoji-version" ]; then
             CURRENT_VERSION=$(cat .twemoji-version | tr -d '[:space:]')
-            LATEST_VERSION_TRIMMED=$(echo "$LATEST_VERSION" | tr -d '[:space:]')
-            if [ "$CURRENT_VERSION" = "$LATEST_VERSION_TRIMMED" ]; then
+            if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
               echo "Already on latest version $LATEST_VERSION"
               echo "skip=true" >> $GITHUB_OUTPUT
               exit 0
             fi
           fi
-          
+
+          # Fetch tag metadata without downloading repository blobs. This lets us
+          # ignore releases that only change the parser, tests, or documentation.
+          git clone --filter=blob:none --no-checkout --depth 1 \
+            --branch "$LATEST_VERSION" \
+            https://github.com/jdecked/twemoji.git /tmp/twemoji
+
+          if [ -n "$CURRENT_VERSION" ] && \
+             git -C /tmp/twemoji fetch --depth 1 origin \
+               "refs/tags/$CURRENT_VERSION:refs/tags/$CURRENT_VERSION"; then
+            if git -C /tmp/twemoji diff --quiet \
+              "$CURRENT_VERSION" "$LATEST_VERSION" -- \
+              assets/svg assets/72x72 svg 72x72; then
+              echo "No Twemoji SVG or PNG asset changes between $CURRENT_VERSION and $LATEST_VERSION"
+              echo "skip=true" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          fi
+
+          echo "Twemoji assets changed; preparing $LATEST_VERSION"
           echo "skip=false" >> $GITHUB_OUTPUT
-          
-      - name: Download Twemoji assets
+
+      - name: Setup Node.js
+        if: steps.twemoji.outputs.skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install optimization tools
+        if: steps.twemoji.outputs.skip != 'true'
+        run: |
+          npm install -g svgo
+          sudo apt-get update
+          sudo apt-get install -y pngquant optipng
+
+      - name: Prepare Twemoji assets
         if: steps.twemoji.outputs.skip != 'true'
         run: |
           VERSION="${{ steps.twemoji.outputs.version }}"
-          
-          # Clone the Twemoji repository at the specific tag
-          git clone --depth 1 --branch "$VERSION" https://github.com/jdecked/twemoji.git /tmp/twemoji
-          
+
+          # Check out the tag cloned during the asset-change check.
+          git -C /tmp/twemoji checkout --detach "$VERSION"
+
           # Create temporary directories for processing
           mkdir -p /tmp/optimized/svg
           mkdir -p /tmp/optimized/png
