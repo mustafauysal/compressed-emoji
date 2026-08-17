@@ -2,8 +2,8 @@
 Contributors: m_uysl
 Tags: emoji,emoticons,compressed emoji,optimized emoji
 Requires at least: 4.6
-Tested up to: 7.0
-Stable tag: 1.7.2
+Tested up to: 7.1
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,10 @@ You can use `compressed_emoji_url` and 	`compressed_emoji_svg_url` filters for C
 1. Comparison
 
 == Changelog ==
+
+= 1.7.3 (August 17, 2026) =
+* Updated Twemoji release tracking to v17.0.3
+* Tested with WordPress 7.1
 
 = 1.7.2 (April 19, 2026) =
 * Tested with WordPress 7.0
